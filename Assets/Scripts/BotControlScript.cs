@@ -59,18 +59,18 @@ public class BotControlScript : MonoBehaviour
             {
                 point = hit.point;
 
-                if (Vector3.Distance(point + new Vector3(0, 0.9f, 0), transform.position) > 1.1f)
+                if (Vector3.Distance(new Vector3(point.x, 0.0f, point.z), new Vector3(transform.position.x, 0.0f, transform.position.z)) > 0.3f)
                 {
                     transform.LookAt(new Vector3(point.x, transform.position.y, point.z));
 
-                    if (Time.realtimeSinceStartup - time <= 0.2f) //如果連續點擊
-                    {
+                    //if (Time.realtimeSinceStartup - time <= 0.2f) //如果連續點擊
+                    //{
 
-                    }
-                    else
-                    {
-                        v = 0.6f;
-                    }
+                    //}
+                    //else
+                    //{
+                        v = 0.4f;
+                    //}
 
                     time = Time.realtimeSinceStartup; //紀錄滑鼠點下時間
                 }

@@ -1,0 +1,68 @@
+Initialize engine version: 4.1.2f1 (911c7369eeac)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0 TODO.dll]
+    Renderer: Intel(R) HD Graphics 4000
+    Vendor:   Intel
+    VRAM:     32 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Tim\Documents\GitHub\Rescure\Target\Rescure_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Tim\Documents\GitHub\Rescure\Target\Rescure_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Tim\Documents\GitHub\Rescure\Target\Rescure_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Tim\Documents\GitHub\Rescure\Target\Rescure_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+- Completed reload, in  0.066 seconds
+desktop: 1680x1050 59Hz; virtual: 3120x1050 at -1440,0
+<RI> Initializing input.
+<RI> Input initialized.
+[mecanim]: BindSkeleton: cannot find Transform 'Camera001'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera001.Target'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera002'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera002.Target'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera003'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera003.Target'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera004'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera004.Target'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera005'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera005.Target'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera006'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Camera006.Target'
+ 
+(Filename:  Line: 1441)
+
+[mecanim]: BindSkeleton: cannot find Transform 'Sky001'
+ 
+(Filename:  Line: 1441)
+

@@ -3,8 +3,7 @@ using System.Collections;
 
 public class ScriptTest : MonoBehaviour {
 
-#pragma 
-    public GameObject Ojjj;
+
 
 	// Use this for initialization
 	void Start () {

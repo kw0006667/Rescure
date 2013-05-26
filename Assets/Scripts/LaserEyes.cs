@@ -8,8 +8,8 @@ public class LaserEyes : MonoBehaviour
 	public LineRenderer laserPrefab; 	// public variable for Laser prefab 
 
 	private BotControlScript botCtrl;	// control script
-	private Transform EyeL;				// Left Eye position transform
-	private Transform EyeR;				// Right Eye position transform
+    private Transform EyeL;				// Left Eye position transform
+    private Transform EyeR;				// Right Eye position transform
 	private LineRenderer laserL;		// Left Eye Laser Line Renderer
 	private LineRenderer laserR;		// Right Eye Laser Line Renderer
 	private bool shot;					// a toggle for when we have shot the laser
@@ -22,8 +22,8 @@ public class LaserEyes : MonoBehaviour
 		laserR = new LineRenderer();
 		
 		// initialising eye positions
-		EyeL = transform.Find("EyeL");
-		EyeR = transform.Find("EyeR");
+        EyeL = transform.Find("EyeL");
+        EyeR = transform.Find("EyeR");
 		
 		// finding the BotControlScript on the root parent of the character
 		botCtrl = transform.root.GetComponent<BotControlScript>(); 

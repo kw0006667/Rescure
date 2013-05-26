@@ -6,6 +6,8 @@ public class ThirdPersonCamera : MonoBehaviour
 	public float smooth = 3f;		// a public variable to adjust smoothing of camera motion
 	Transform standardPos;			// the usual position for the camera, specified by a transform in the game
 	Transform lookAtPos;			// the position to move the camera to when using head look
+
+    public Transform character;
 	
 	void Start()
 	{
@@ -15,23 +17,41 @@ public class ThirdPersonCamera : MonoBehaviour
 		if(GameObject.Find ("LookAtPos"))
 			lookAtPos = GameObject.Find ("LookAtPos").transform;
 	}
+
+    void Update()
+    {
+
+    }
 	
 	void FixedUpdate ()
 	{
 		// if we hold Alt
-		if(Input.GetButton("Fire2") && lookAtPos)
-		{
-			// lerp the camera position to the look at position, and lerp its forward direction to match 
-			transform.position = Vector3.Lerp(transform.position, lookAtPos.position, Time.deltaTime * smooth);
-			transform.forward = Vector3.Lerp(transform.forward, lookAtPos.forward, Time.deltaTime * smooth);
-		}
-		else
-		{	
-			// return the camera to standard position and direction
+        if (Input.GetButton("Fire2") && lookAtPos)
+        {
+            // lerp the camera position to the look at position, and lerp its forward direction to match 
+            transform.position = Vector3.Lerp(transform.position, lookAtPos.position, Time.deltaTime * smooth);
+            //transform.forward = Vector3.Lerp(transform.forward, lookAtPos.forward, Time.deltaTime * smooth);
+            transform.LookAt(GameObject.Find("Enemy").transform);
+        }
+        else if (Input.GetButtonUp("Fire2"))
+        {
+            transform.LookAt(character.position);
+        }
+        else
+        {
+            // return the camera to standard position and direction
             //transform.position = Vector3.Lerp(transform.position, standardPos.position, Time.deltaTime * smooth);
             //transform.forward = Vector3.Lerp(transform.forward, standardPos.forward, Time.deltaTime * smooth);
-            transform.position = Vector3.Lerp(transform.position, lookAtPos.position + new Vector3(-6.0f, 3.2f, 0.0f), Time.deltaTime * smooth * 3);
-		}
+            transform.LookAt( new Vector3( character.position.x, 0.0f, character.position.z));
+            transform.position = Vector3.Lerp(transform.position, character.position + new Vector3(-3.5f, 5.0f, 0.0f).normalized * 10, Time.deltaTime * smooth * 3);
+
+        }
 		
 	}
+
+    bool isBehindEnermy()
+    {
+
+        return false;
+    }
 }
