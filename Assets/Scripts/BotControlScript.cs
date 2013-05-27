@@ -5,12 +5,13 @@ using System.Collections;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(SphereCollider))]
 public class BotControlScript : MonoBehaviour
 {
     [System.NonSerialized]
     public float lookWeight;					// the amount to transition when using head look
 
-    [System.NonSerialized]
+    //[System.NonSerialized]
     public Transform enemy;						// a transform to Lerp the camera to during head look
 
     public float animSpeed = 1.5f;				// a public setting for overall animator animation speed
@@ -35,16 +36,29 @@ public class BotControlScript : MonoBehaviour
     private Vector3 point;//紀錄滑鼠點下時的3D座標
     private float time;
 
-    public float h, v; // animator's Speed, Direction
+    private float h, v; // animator's Speed, Direction
+
+    private SphereCollider detectEnemy;
+    private float maxEnemyDistance = 5.0f;
+
+    //[System.NonSerialized]
+    public bool isEnemyInView;
+    public float playerViewAngle = 120.0f;
 
     void Start()
     {
         // initialising reference variables
         anim = GetComponent<Animator>();
         col = GetComponent<CapsuleCollider>();
-        enemy = GameObject.Find("Enemy").transform;
+        //enemy = GameObject.Find("Enemy").transform;
         if (anim.layerCount == 2)
             anim.SetLayerWeight(1, 1);
+
+        detectEnemy = gameObject.AddComponent("SphereCollider") as SphereCollider;
+        //detectEnemy = GetComponent<SphereCollider>();
+        detectEnemy.isTrigger = true;
+        detectEnemy.radius = maxEnemyDistance;
+        isEnemyInView = false;
     }
 
     void Update()
@@ -69,10 +83,10 @@ public class BotControlScript : MonoBehaviour
                     //}
                     //else
                     //{
-                        v = 0.4f;
+                    v = 0.4f;
                     //}
 
-                    time = Time.realtimeSinceStartup; //紀錄滑鼠點下時間
+                    //time = Time.realtimeSinceStartup; //紀錄滑鼠點下時間
                 }
             }
 
@@ -100,7 +114,7 @@ public class BotControlScript : MonoBehaviour
         // LOOK AT ENEMY
 
         // if we hold Alt..
-        if (Input.GetButton("Fire2"))
+        if (Input.GetButton("Fire2") && isEnemyInView && enemy)
         {
             // ...set a position to look at with the head, and use Lerp to smooth the look weight from animation to IK (see line 54)
             anim.SetLookAtPosition(enemy.position);
@@ -202,6 +216,52 @@ public class BotControlScript : MonoBehaviour
         if (layer2CurrentState.nameHash == waveState)
         {
             anim.SetBool("Wave", false);
+        }
+    }
+
+    public Vector3 enemyTmp = new Vector3(100000, 100000, 100000);
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Enemy" && Vector3.Distance(other.gameObject.transform.position, transform.position) < maxEnemyDistance)
+        {
+            //print(other.gameObject.transform.position);
+            
+            Vector3 direction = new Vector3(other.gameObject.transform.position.x, 0.0f, other.gameObject.transform.position.z) - new Vector3(transform.position.x, 0.0f, transform.position.z);
+            float angle = Vector3.Angle(direction, transform.forward);
+            if (angle < playerViewAngle / 2)
+            {
+                time = 0;
+
+                if (Vector3.Distance(other.gameObject.transform.position, transform.position) < Vector3.Distance(enemyTmp, transform.position))
+                {
+                    enemyTmp = other.gameObject.transform.position;
+                    enemy = other.gameObject.transform;
+                    direction = new Vector3(enemy.position.x, 0.0f, enemy.position.z) - new Vector3(transform.position.x, 0.0f, transform.position.z);
+
+                    //Ray ray = new Ray(transform.position, direction);
+                    //RaycastHit hitInfo = new RaycastHit();
+
+                    //if (Physics.Raycast(ray, out hitInfo))
+                    //{                        
+                        isEnemyInView = true;
+                    //}
+                }
+            }
+            else
+            {
+                time += Time.deltaTime;
+                if (time >= 1)
+                    isEnemyInView = false;
+            }
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            isEnemyInView = false;
+            enemyTmp = new Vector3(100000, 100000, 100000);
         }
     }
 }
