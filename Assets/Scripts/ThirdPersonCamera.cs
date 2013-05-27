@@ -31,7 +31,7 @@ public class ThirdPersonCamera : MonoBehaviour
     void FixedUpdate()
     {
         // if we hold Alt
-        if (Input.GetButton("Fire2") && lookAtPos && botCtrl.isEnemyInView)
+        if (Input.GetButton("Fire2") && lookAtPos && botCtrl.isEnemyInView && !botCtrl.isDie && botCtrl.isCanGetMemory)
         {
             // lerp the camera position to the look at position, and lerp its forward direction to match 
             transform.position = Vector3.Lerp(transform.position, lookAtPos.position, Time.deltaTime * smooth);

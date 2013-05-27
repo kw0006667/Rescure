@@ -38,12 +38,21 @@ public class BotControlScript : MonoBehaviour
 
     private float h, v; // animator's Speed, Direction
 
-    private SphereCollider detectEnemy;
-    private float maxEnemyDistance = 5.0f;
+    private SphereCollider detectEnemy; //判斷敵人的範圍
+    private float maxEnemyDistance = 5.0f; //範圍最大距離
 
     //[System.NonSerialized]
-    public bool isEnemyInView;
-    public float playerViewAngle = 120.0f;
+    public bool isEnemyInView; //敵人是否被眼睛我看見了
+    public float playerViewAngle = 120.0f; //最大可視角度
+
+    private EnermyAI eAI; //敵人腳本
+    public bool isDie = false; //是否死亡
+
+    public float memoryProgress = 0.0f; //讀取記憶進度
+    private float memoryProgressMax = 3.0f; //最大讀取記憶進度
+    public int memoryItem = 0; //得到正確記憶數量
+    private int memoryItemMax = 4; //最大正確記憶數量
+    public bool isCanGetMemory = true;
 
     void Start()
     {
@@ -58,12 +67,15 @@ public class BotControlScript : MonoBehaviour
         //detectEnemy = GetComponent<SphereCollider>();
         detectEnemy.isTrigger = true;
         detectEnemy.radius = maxEnemyDistance;
+        detectEnemy.center = new Vector3(0.0f, 0.9f, 0.0f);
         isEnemyInView = false;
+
+        eAI = enemy.root.GetComponent<EnermyAI>();
     }
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !isDie)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -89,7 +101,6 @@ public class BotControlScript : MonoBehaviour
                     //time = Time.realtimeSinceStartup; //紀錄滑鼠點下時間
                 }
             }
-
         }
         if (Input.GetMouseButtonUp(0))
         {
@@ -114,16 +125,42 @@ public class BotControlScript : MonoBehaviour
         // LOOK AT ENEMY
 
         // if we hold Alt..
-        if (Input.GetButton("Fire2") && isEnemyInView && enemy)
+        if (Input.GetButton("Fire2") && isEnemyInView && enemy && !isDie && isCanGetMemory) //按下動作
         {
-            // ...set a position to look at with the head, and use Lerp to smooth the look weight from animation to IK (see line 54)
-            anim.SetLookAtPosition(enemy.position);
-            lookWeight = Mathf.Lerp(lookWeight, 1f, Time.deltaTime * lookSmoother);
+            if (eAI.isSee) //被敵人發現
+                isDie = true;
+            else
+            {   // ...set a position to look at with the head, and use Lerp to smooth the look weight from animation to IK (see line 54)                
+                anim.SetLookAtPosition(enemy.position);
+                lookWeight = Mathf.Lerp(lookWeight, 1f, Time.deltaTime * lookSmoother);
+
+                memoryProgress += Time.deltaTime;
+                if (memoryProgress >= memoryProgressMax) //順利地得到記憶(不論正確否)
+                {
+                    isCanGetMemory = false;
+                    if (eAI.isTrueMemory)
+                    {
+                        memoryItem++;
+                        eAI.isTrueMemory = false;
+                    }
+                }
+            }
+        }        
+        else if (isDie)
+        {
         }
-        // else, return to using animation for the head by lerping back to 0 for look at weight
-        else
+        else if (Input.GetButtonUp("Fire2"))
         {
+            isCanGetMemory = true;
+            memoryProgress = 0;
+        }
+        else // else, return to using animation for the head by lerping back to 0 for look at weight
+        {            
             lookWeight = Mathf.Lerp(lookWeight, 0f, Time.deltaTime * lookSmoother);
+        }
+
+        if (memoryItem >= memoryItemMax) //若得到所有所需記憶
+        { 
         }
 
         // STANDARD JUMPING
@@ -237,13 +274,14 @@ public class BotControlScript : MonoBehaviour
                 {
                     enemyTmp = other.gameObject.transform.position;
                     enemy = other.gameObject.transform;
-                    direction = new Vector3(enemy.position.x, 0.0f, enemy.position.z) - new Vector3(transform.position.x, 0.0f, transform.position.z);
+                    eAI = enemy.root.GetComponent<EnermyAI>();
+                    //direction = new Vector3(enemy.position.x, 0.0f, enemy.position.z) - new Vector3(transform.position.x, 0.0f, transform.position.z);
 
                     //Ray ray = new Ray(transform.position, direction);
                     //RaycastHit hitInfo = new RaycastHit();
 
-                    //if (Physics.Raycast(ray, out hitInfo))
-                    //{                        
+                    //if (Physics.Raycast(ray, out hitInfo, detectEnemy.radius))
+                    //{
                         isEnemyInView = true;
                     //}
                 }

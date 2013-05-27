@@ -37,7 +37,7 @@ public class LaserEyes : MonoBehaviour
 	void Update ()
 	{
 		// if the look weight has been increased to 0.9, and we have not yet shot..
-        if (botCtrl.lookWeight >= 0.9f && !shot && botCtrl.isEnemyInView)
+        if (botCtrl.lookWeight >= 0.9f && !shot && botCtrl.isEnemyInView && !botCtrl.isDie && botCtrl.isCanGetMemory)
 		{
 			// instantiate our two lasers
 			laserL = Instantiate(laserPrefab) as LineRenderer;
@@ -61,7 +61,7 @@ public class LaserEyes : MonoBehaviour
 			audio.Stop();
 		}
 		// if our laser line renderer objects exist..
-        if (laserL != null && botCtrl.isEnemyInView)
+        if (laserL != null && botCtrl.isEnemyInView && !botCtrl.isDie && botCtrl.isCanGetMemory)
 		{
 			// set positions for our line renderer objects to start at the eyes and end at the enemy position, registered in the bot control script
 			laserL.SetPosition(0, EyeL.position);

@@ -28,7 +28,7 @@ public class EnermyAI : MonoBehaviour
     private Animator anim;
 
     // 是否被看到
-    private bool isSee;
+    public bool isSee;
 
     private float lookWeight;
 
@@ -38,6 +38,9 @@ public class EnermyAI : MonoBehaviour
 
     // 是否停止
     private bool isStop;
+
+    public bool isTrueMemory = false;//是福為真的記憶
+    public int memoryId = 0;//記憶圖片編號
 
 
     // A timer for the partrolWaitTime
