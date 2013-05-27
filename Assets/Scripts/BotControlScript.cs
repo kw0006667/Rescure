@@ -70,7 +70,7 @@ public class BotControlScript : MonoBehaviour
         detectEnemy.center = new Vector3(0.0f, 0.9f, 0.0f);
         isEnemyInView = false;
 
-        eAI = enemy.root.GetComponent<EnermyAI>();
+        //eAI = enemy.root.GetComponent<EnermyAI>();
     }
 
     void Update()
