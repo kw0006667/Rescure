@@ -69,7 +69,7 @@ public class EnermyAI : MonoBehaviour
         this.Patrolling();
         if (this.isSee)
         {
-            print("see");
+            //print("see");
             this.anim.SetLookAtPosition(this.player.transform.position + new Vector3(0, 1.5f, 0));
             this.lookWeight = Mathf.Lerp(this.lookWeight, 1.0f, Time.deltaTime * 3);
         }

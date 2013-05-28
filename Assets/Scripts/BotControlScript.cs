@@ -52,6 +52,7 @@ public class BotControlScript : MonoBehaviour
     private float memoryProgressMax = 3.0f; //最大讀取記憶進度
     public int memoryItem = 0; //得到正確記憶數量
     private int memoryItemMax = 4; //最大正確記憶數量
+    public bool isMemoryGet = false; //得到所有記憶
     public bool isCanGetMemory = true;
 
     void Start()
@@ -108,6 +109,24 @@ public class BotControlScript : MonoBehaviour
         }
     }
 
+    public Texture[] textures;
+    void OnGUI()
+    {
+        if (isMemoryGet) //得到所有圖片
+        {
+            GUI.DrawTexture(new Rect(Screen.width * 0.25f, Screen.height * 0.25f, Screen.width * 0.25f, Screen.height * 0.25f), textures[0], ScaleMode.StretchToFill, true, 10.0F);
+            GUI.DrawTexture(new Rect(Screen.width * 0.50f, Screen.height * 0.25f, Screen.width * 0.25f, Screen.height * 0.25f), textures[1], ScaleMode.StretchToFill, true, 10.0F);
+            GUI.DrawTexture(new Rect(Screen.width * 0.25f, Screen.height * 0.50f, Screen.width * 0.25f, Screen.height * 0.25f), textures[2], ScaleMode.StretchToFill, true, 10.0F);
+            GUI.DrawTexture(new Rect(Screen.width * 0.50f, Screen.height * 0.50f, Screen.width * 0.25f, Screen.height * 0.25f), textures[3], ScaleMode.StretchToFill, true, 10.0F);
+            Time.timeScale = 0.000001f;
+        }
+        else if (eAI)
+        {
+            GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, memoryProgress / 3.0f);
+            GUI.DrawTexture(new Rect(Screen.width * 0.01f, Screen.height * 0.74f, Screen.width * 0.25f, Screen.height * 0.25f), textures[eAI.memoryId], ScaleMode.StretchToFill, true, 10.0F);           
+        }
+    }
+
     void FixedUpdate()
     {
         //h = Input.GetAxis("Horizontal");				// setup h variable as our horizontal input axis
@@ -145,7 +164,7 @@ public class BotControlScript : MonoBehaviour
                     }
                 }
             }
-        }        
+        }
         else if (isDie)
         {
         }
@@ -155,12 +174,13 @@ public class BotControlScript : MonoBehaviour
             memoryProgress = 0;
         }
         else // else, return to using animation for the head by lerping back to 0 for look at weight
-        {            
+        {
             lookWeight = Mathf.Lerp(lookWeight, 0f, Time.deltaTime * lookSmoother);
         }
 
         if (memoryItem >= memoryItemMax) //若得到所有所需記憶
-        { 
+        {
+            isMemoryGet = true;
         }
 
         // STANDARD JUMPING
@@ -263,7 +283,7 @@ public class BotControlScript : MonoBehaviour
         if (other.gameObject.tag == "Enemy" && Vector3.Distance(other.gameObject.transform.position, transform.position) < maxEnemyDistance)
         {
             //print(other.gameObject.transform.position);
-            
+
             Vector3 direction = new Vector3(other.gameObject.transform.position.x, 0.0f, other.gameObject.transform.position.z) - new Vector3(transform.position.x, 0.0f, transform.position.z);
             float angle = Vector3.Angle(direction, transform.forward);
             if (angle < playerViewAngle / 2)
@@ -282,7 +302,7 @@ public class BotControlScript : MonoBehaviour
 
                     //if (Physics.Raycast(ray, out hitInfo, detectEnemy.radius))
                     //{
-                        isEnemyInView = true;
+                    isEnemyInView = true;
                     //}
                 }
             }
