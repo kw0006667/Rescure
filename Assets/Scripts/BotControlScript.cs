@@ -42,6 +42,7 @@ public class BotControlScript : MonoBehaviour
     private float maxEnemyDistance = 5.0f; //範圍最大距離
 
     //[System.NonSerialized]
+    public Transform enemys; //所有靠近的敵人
     public bool isEnemyInView; //敵人是否被眼睛我看見了
     public float playerViewAngle = 120.0f; //最大可視角度
 
@@ -282,6 +283,8 @@ public class BotControlScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy" && Vector3.Distance(other.gameObject.transform.position, transform.position) < maxEnemyDistance)
         {
+            enemys = other.gameObject.transform;
+            eAI = enemys.root.GetComponent<EnermyAI>();
             //print(other.gameObject.transform.position);
 
             Vector3 direction = new Vector3(other.gameObject.transform.position.x, 0.0f, other.gameObject.transform.position.z) - new Vector3(transform.position.x, 0.0f, transform.position.z);
@@ -293,8 +296,7 @@ public class BotControlScript : MonoBehaviour
                 if (Vector3.Distance(other.gameObject.transform.position, transform.position) < Vector3.Distance(enemyTmp, transform.position))
                 {
                     enemyTmp = other.gameObject.transform.position;
-                    enemy = other.gameObject.transform;
-                    eAI = enemy.root.GetComponent<EnermyAI>();
+                    enemy = other.gameObject.transform;                    
                     //direction = new Vector3(enemy.position.x, 0.0f, enemy.position.z) - new Vector3(transform.position.x, 0.0f, transform.position.z);
 
                     //Ray ray = new Ray(transform.position, direction);
