@@ -282,19 +282,21 @@ public class BotControlScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy" && Vector3.Distance(other.gameObject.transform.position, transform.position) < maxEnemyDistance)
         {
-            //print(other.gameObject.transform.position);
+            print(other.gameObject.transform.position);
+            enemy = other.gameObject.transform;
             eAI = enemy.root.GetComponent<EnermyAI>();
 
-            Vector3 direction = new Vector3(other.gameObject.transform.position.x, 0.0f, other.gameObject.transform.position.z) - new Vector3(transform.position.x, 0.0f, transform.position.z);
+            Vector3 direction = new Vector3(enemy.position.x, 0.0f, enemy.position.z) - new Vector3(transform.position.x, 0.0f, transform.position.z);
             float angle = Vector3.Angle(direction, transform.forward);
             if (angle < playerViewAngle / 2)
             {
                 time = 0;
 
-                if (Vector3.Distance(other.gameObject.transform.position, transform.position) < Vector3.Distance(enemyTmp, transform.position))
+                if (Vector3.Distance(enemy.position, transform.position) < Vector3.Distance(enemyTmp, transform.position))
                 {
                     enemyTmp = other.gameObject.transform.position;
-                    enemy = other.gameObject.transform;
+                    //enemy = other.gameObject.transform;
+                    //eAI = enemy.root.GetComponent<EnermyAI>();
                     
                     //direction = new Vector3(enemy.position.x, 0.0f, enemy.position.z) - new Vector3(transform.position.x, 0.0f, transform.position.z);
 
