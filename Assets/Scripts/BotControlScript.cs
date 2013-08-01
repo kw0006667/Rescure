@@ -282,7 +282,7 @@ public class BotControlScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy" && Vector3.Distance(other.gameObject.transform.position, transform.position) < maxEnemyDistance)
         {
-            print(other.gameObject.transform.position);
+            //print(other.gameObject.transform.position);
             enemy = other.gameObject.transform;
             eAI = enemy.root.GetComponent<EnermyAI>();
 
