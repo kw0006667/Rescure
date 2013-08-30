@@ -121,6 +121,10 @@ public class BotControlScript : MonoBehaviour
             GUI.DrawTexture(new Rect(Screen.width * 0.25f, Screen.height * 0.50f, Screen.width * 0.25f, Screen.height * 0.25f), textures[2], ScaleMode.StretchToFill, true, 10.0F);
             GUI.DrawTexture(new Rect(Screen.width * 0.50f, Screen.height * 0.50f, Screen.width * 0.25f, Screen.height * 0.25f), textures[3], ScaleMode.StretchToFill, true, 10.0F);
             Time.timeScale = 0.000001f;
+            if (Input.anyKeyDown)
+            {
+                Application.LoadLevel(0);
+            }
         }
         else if (eAI)
         {
