@@ -54,6 +54,8 @@ public class BotControlScript : MonoBehaviour
     private int memoryItemMax = 4; //最大正確記憶數量
     public bool isMemoryGet = false; //得到所有記憶
     public bool isCanGetMemory = true;
+    public Texture memoryBarBack; //取得記憶時的進度條
+    public Texture memoryBarFront;
 
     void Start()
     {
@@ -112,7 +114,7 @@ public class BotControlScript : MonoBehaviour
     public Texture[] textures;
     void OnGUI()
     {
-        if (isMemoryGet) //得到所有圖片
+        if (isMemoryGet) //得到所有圖片就拼成一張
         {
             GUI.DrawTexture(new Rect(Screen.width * 0.25f, Screen.height * 0.25f, Screen.width * 0.25f, Screen.height * 0.25f), textures[0], ScaleMode.StretchToFill, true, 10.0F);
             GUI.DrawTexture(new Rect(Screen.width * 0.50f, Screen.height * 0.25f, Screen.width * 0.25f, Screen.height * 0.25f), textures[1], ScaleMode.StretchToFill, true, 10.0F);
@@ -122,9 +124,21 @@ public class BotControlScript : MonoBehaviour
         }
         else if (eAI)
         {
-            GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, memoryProgress / 3.0f);
-            GUI.DrawTexture(new Rect(Screen.width * 0.01f, Screen.height * 0.74f, Screen.width * 0.25f, Screen.height * 0.25f), textures[eAI.memoryId], ScaleMode.StretchToFill, true, 10.0F);           
+            if (Input.GetButton("Fire2") && isEnemyInView && enemy && !isDie && isCanGetMemory)
+            {
+                GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, 0.5f);
+                DrawProgress(new Vector2(Screen.width * 0.01f, Screen.height * 0.70f), new Vector2(Screen.width * 0.25f, Screen.height * 0.05f), memoryProgress / 3.0f);
+                GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, memoryProgress / 3.0f); //改變透明度
+                //顯示正在得到的記憶
+                GUI.DrawTexture(new Rect(Screen.width * 0.01f, Screen.height * 0.74f, Screen.width * 0.25f, Screen.height * 0.25f), textures[eAI.memoryId], ScaleMode.StretchToFill, true, 10.0F);
+            }
         }
+    }
+
+    public void DrawProgress(Vector2 location, Vector2 size, float progress)
+    {
+        GUI.DrawTexture(new Rect(location.x, location.y, size.x, size.y), memoryBarBack);
+        GUI.DrawTexture(new Rect(location.x, location.y, size.x * progress, size.y), memoryBarFront);
     }
 
     void FixedUpdate()
